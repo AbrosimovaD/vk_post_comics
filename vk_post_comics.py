@@ -26,7 +26,7 @@ def get_upload_url(params):
     return response.json()['response']['upload_url']
 
 
-def post_photo_to_server(url, path, filename):
+def upload_photo_to_server(url, path, filename):
     with open(f'{path}/{filename}', 'rb') as file:
         files = {
             'photo': file
@@ -80,7 +80,7 @@ def main():
     }
     download_image(url_for_image, path_for_comic, filename_for_image)
     upload_url = get_upload_url(params)
-    post_photo_params = post_photo_to_server(upload_url, path_for_comic, filename_for_image)
+    post_photo_params = upload_photo_to_server(upload_url, path_for_comic, filename_for_image)
     photo_name = upload_photo(params, post_photo_params)
     post_comic(photo_name, params, comic_comment)
     Path(f'{path_for_comic}/{filename_for_image}').unlink(missing_ok=True)
