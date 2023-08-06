@@ -23,6 +23,9 @@ def download_image(url, path, filename):
 def get_upload_url(params):
     response = requests.get('https://api.vk.com/method/photos.getWallUploadServer', params=params)
     response.raise_for_status()
+    decoded_response = response.json()
+    if 'error' in decoded_response:
+        raise requests.exceptions.HTTPError(decoded_response['error'])
     return response.json()['response']['upload_url']
 
 
@@ -33,6 +36,9 @@ def upload_photo_to_server(url, path, filename):
         }
         response = requests.post(url, files=files)
     response.raise_for_status()
+    decoded_response = response.json()
+    if 'error' in decoded_response:
+        raise requests.exceptions.HTTPError(decoded_response['error'])
     return response.json()
 
 
@@ -43,7 +49,10 @@ def upload_photo(params, post_params):
     url = 'https://api.vk.com/method/photos.saveWallPhoto'
     response = requests.get(url, params=params)
     response.raise_for_status()
-    upload_response = response.json()['response'][0]
+    decoded_response = response.json()
+    if 'error' in decoded_response:
+        raise requests.exceptions.HTTPError(decoded_response['error'])
+    upload_response = decoded_response['response'][0]
     photo_name = 'photo' + str(upload_response['owner_id']) + '_' + str(upload_response['id']) + '&access_key=' + upload_response['access_key']
     return photo_name
 
@@ -56,6 +65,9 @@ def post_comic(photo_name, params, comic_comment):
     params['from_group'] = 1
     params['message'] = comic_comment
     response = requests.get(url, params=params)
+    decoded_response = response.json()
+    if 'error' in decoded_response:
+        raise requests.exceptions.HTTPError(decoded_response['error'])    
     response.raise_for_status()
 
 
