@@ -66,12 +66,13 @@ def main():
     last_comic_number = get_last_comic_number()
     comic_number = random.randint(1, last_comic_number)
     url_for_comic = f'https://xkcd.com/{comic_number}/info.0.json'
-    comic = requests.get(url_for_comic)
-    comic.raise_for_status()
+    comic_response = requests.get(url_for_comic)
+    comic_response.raise_for_status()
     filename_for_image = 'comic.png'
     path_for_comic = 'D://comic'
-    url_for_image = comic.json()['img']
-    comic_comment = comic.json()['alt']
+    comic = comic_response.json()
+    url_for_image = comic['img']
+    comic_comment = comic['alt']
     params = {
         'access_token': access_token,
         'group_id': group_id,
