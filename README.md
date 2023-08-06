@@ -37,7 +37,7 @@
 
    Пример запроса:
    
-   ```https://oauth.vk.com/authorize?client_id=**id вашего приложения полученного в предыдущем шаге**&display=page&redirect_uri=https://oauth.vk.com/blank.html&scope=scope=photos,groups,wall&response_type=token&v=5.131&state=12345```
+   ```https://oauth.vk.com/authorize?client_id=**id вашего приложения полученного в предыдущем шаге**&display=page&redirect_uri=https://oauth.vk.com/blank.html&scope=photos,groups,wall&response_type=token&v=5.131&state=12345```
 
    Вас переадресуют на окно доступа, где нужно дать разрешение.
    ![image](https://github.com/AbrosimovaD/vk_post_comics/assets/114830550/e1ecf71e-aebb-4bd7-8e33-17d7657b9037)
