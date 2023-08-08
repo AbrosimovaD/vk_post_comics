@@ -15,7 +15,7 @@ def get_last_comic_number():
 def download_image(url, path, filename):
     response = requests.get(url)
     response.raise_for_status()
-    with open(f'{path}/{filename}', 'wb') as file:
+    with open(Path(path, filename), 'wb') as file:
         file.write(response.content)
 
 
@@ -34,7 +34,7 @@ def get_upload_url(access_token, group_id, vers):
 
 
 def upload_photo_to_server(url, path, filename):
-    with open(f'{path}/{filename}', 'rb') as file:
+    with open(Path(path, filename), 'rb') as file:
         files = {
             'photo': file
         }
@@ -94,12 +94,12 @@ def main():
     comic_response = requests.get(url_for_comic)
     comic_response.raise_for_status()
     filename_for_image = 'comic.png'
-    path_for_comic = 'D://comic'
+    path_for_comic = Path(Path.home(), 'comic')
     comic = comic_response.json()
     url_for_image = comic['img']
     comic_comment = comic['alt']
     vers = '5.131'
-    Path(path_for_comic).mkdir(parents=True, exist_ok=True)
+    path_for_comic.mkdir(parents=True, exist_ok=True)
     try:
         download_image(url_for_image, path_for_comic, filename_for_image)
         upload_url = get_upload_url(access_token, group_id, vers)
@@ -107,7 +107,7 @@ def main():
         photo_name = upload_photo(access_token, group_id, vers, post_photo_params['photo'], post_photo_params['server'], post_photo_params['hash'])
         post_comic(photo_name, access_token, group_id, vers, comic_comment)
     finally:
-        Path(f'{path_for_comic}/{filename_for_image}').unlink(missing_ok=True)
+        Path(path_for_comic, filename_for_image).unlink(missing_ok=True)
 
 
 if __name__ == '__main__':
