@@ -53,21 +53,20 @@ def upload_photo(params, post_params):
     if 'error' in decoded_response:
         raise requests.exceptions.HTTPError(decoded_response['error'])
     upload_response = decoded_response['response'][0]
-    photo_name = 'photo' + str(upload_response['owner_id']) + '_' + str(upload_response['id']) + '&access_key=' + upload_response['access_key']
+    photo_name = 'photo' + str(upload_response['owner_id']) + '_' + str(upload_response['id'])
     return photo_name
 
 
 def post_comic(photo_name, params, comic_comment):
-    url = 'https://api.vk.com/method/wall.post?'
+    url = 'https://api.vk.com/method/wall.post'
     params['attachments'] = photo_name
-    params['owner_id'] = -int(params['group_id'])
-    del params['group_id']
+    params['owner_id'] = - int(params.pop('group_id'))
     params['from_group'] = 1
     params['message'] = comic_comment
     response = requests.get(url, params=params)
     decoded_response = response.json()
     if 'error' in decoded_response:
-        raise requests.exceptions.HTTPError(decoded_response['error'])    
+        raise requests.exceptions.HTTPError(decoded_response['error'])
     response.raise_for_status()
 
 
