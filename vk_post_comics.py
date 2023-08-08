@@ -20,7 +20,12 @@ def download_image(url, path, filename):
         file.write(response.content)
 
 
-def get_upload_url(params):
+def get_upload_url(access_token, group_id, vers):
+    params = {
+        'access_token': access_token,
+        'v': vers,
+        'group_id': group_id
+        }
     response = requests.get('https://api.vk.com/method/photos.getWallUploadServer', params=params)
     response.raise_for_status()
     decoded_response = response.json()
@@ -42,10 +47,15 @@ def upload_photo_to_server(url, path, filename):
     return response.json()
 
 
-def upload_photo(params, post_params):
-    params['photo'] = post_params['photo']
-    params['server'] = post_params['server']
-    params['hash'] = post_params['hash']
+def upload_photo(access_token, group_id, vers, photo, server, hash):
+    params = {
+        'access_token': access_token,
+        'v': vers,
+        'group_id': group_id,
+        'photo': photo,
+        'server': server,
+        'hash': hash
+        }
     url = 'https://api.vk.com/method/photos.saveWallPhoto'
     response = requests.get(url, params=params)
     response.raise_for_status()
@@ -57,12 +67,16 @@ def upload_photo(params, post_params):
     return photo_name
 
 
-def post_comic(photo_name, params, comic_comment):
+def post_comic(photo_name, access_token, group_id, vers, comic_comment):
     url = 'https://api.vk.com/method/wall.post'
-    params['attachments'] = photo_name
-    params['owner_id'] = - int(params.pop('group_id'))
-    params['from_group'] = 1
-    params['message'] = comic_comment
+    params = {
+        'access_token': access_token,
+        'v': vers,
+        'attachments': photo_name,
+        'owner_id': - int(group_id),
+        'from_group': 1,
+        'message': comic_comment
+    }
     response = requests.get(url, params=params)
     decoded_response = response.json()
     if 'error' in decoded_response:
@@ -84,16 +98,12 @@ def main():
     comic = comic_response.json()
     url_for_image = comic['img']
     comic_comment = comic['alt']
-    params = {
-        'access_token': access_token,
-        'group_id': group_id,
-        'v': '5.131'
-    }
+    vers = '5.131'
     download_image(url_for_image, path_for_comic, filename_for_image)
-    upload_url = get_upload_url(params)
+    upload_url = get_upload_url(access_token, group_id, vers)
     post_photo_params = upload_photo_to_server(upload_url, path_for_comic, filename_for_image)
-    photo_name = upload_photo(params, post_photo_params)
-    post_comic(photo_name, params, comic_comment)
+    photo_name = upload_photo(access_token, group_id, vers, post_photo_params['photo'], post_photo_params['server'], post_photo_params['hash'])
+    post_comic(photo_name, access_token, group_id, vers, comic_comment)
     Path(f'{path_for_comic}/{filename_for_image}').unlink(missing_ok=True)
 
 
