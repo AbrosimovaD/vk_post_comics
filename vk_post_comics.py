@@ -13,7 +13,6 @@ def get_last_comic_number():
 
 
 def download_image(url, path, filename):
-    Path(path).mkdir(parents=True, exist_ok=True)
     response = requests.get(url)
     response.raise_for_status()
     with open(f'{path}/{filename}', 'wb') as file:
@@ -100,6 +99,7 @@ def main():
     url_for_image = comic['img']
     comic_comment = comic['alt']
     vers = '5.131'
+    Path(path_for_comic).mkdir(parents=True, exist_ok=True)
     download_image(url_for_image, path_for_comic, filename_for_image)
     upload_url = get_upload_url(access_token, group_id, vers)
     post_photo_params = upload_photo_to_server(upload_url, path_for_comic, filename_for_image)
