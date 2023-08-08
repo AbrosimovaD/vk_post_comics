@@ -11,17 +11,22 @@
 
 Если файл находится в той же директории, что и файл скрипта, то для установки воспользуйтесь командой 
 
-  ```  pip install -r requirements.txt ```
+```
+pip install -r requirements.txt
+```
 
 Если же в другой папке - необходимо дополнительно прописать путь до файла:
 
-  ``` pip install -r /path/to/requirements.txt ```
+```
+pip install -r /path/to/requirements.txt
+```
 
 ## Переменные окружения
 В данном скрипте для выполнения запросов используются переменные окружения:
-
-* ```VK_ACCESS_TOKEN=*Access key для VK API* ```
-* ```VK_GROUP_ID=*ID группы, куда будут поститься комиксы*```
+```
+VK_ACCESS_TOKEN=*Access key для VK API* 
+VK_GROUP_ID=*ID группы, куда будут поститься комиксы*
+```
 
 ### Как получить
 1. Создайте от своего пользователя Вконтакте сообщество, где будете публиковать комиксы. При успехе оно отобразиться у вас во вкладке **Сообщества - > Управление**.
@@ -37,7 +42,9 @@
 
    Пример запроса:
    
-   ```https://oauth.vk.com/authorize?client_id=**id вашего приложения полученного в предыдущем шаге**&display=page&redirect_uri=https://oauth.vk.com/blank.html&scope=photos,groups,wall&response_type=token&v=5.131&state=12345```
+   ```
+   https://oauth.vk.com/authorize?client_id=**id вашего приложения полученного в предыдущем шаге**&display=page&redirect_uri=https://oauth.vk.com/blank.html&scope=photos,groups,wall&response_type=token&v=5.131&state=12345
+   ```
 
    Вас переадресуют на окно доступа, где нужно дать разрешение.
    ![image](https://github.com/AbrosimovaD/vk_post_comics/assets/114830550/e1ecf71e-aebb-4bd7-8e33-17d7657b9037)
@@ -46,17 +53,20 @@
    ![image](https://github.com/AbrosimovaD/vk_post_comics/assets/114830550/e5be38e2-0634-4fed-9657-d14ae4d70a2a)
 
 1. Cоздайте переменную окружения на своём компьютере: создайте специальный файл ```.env``` рядом с ```main.py```. Поместите в переменную ```VK_ACCESS_TOKEN``` полученный access token
-
-        ```VK_ACCESS_TOKEN=*Access key для VK API*```
-1. Узнать ```group_id``` вашего сообщества можно через [сервис](https://regvk.com/id/)
-2. Поместите в переменную ```VK_GROUP_ID``` полученный group_id
-
-        ```VK_GROUP_ID=*ID группы, куда будут поститься комиксы*```
+```
+VK_ACCESS_TOKEN=*Access key для VK API*
+```
+5. Узнать ```group_id``` вашего сообщества можно через [сервис](https://regvk.com/id/)
+6. Поместите в переменную ```VK_GROUP_ID``` полученный group_id
+```
+VK_GROUP_ID=*ID группы, куда будут поститься комиксы*
+```
 
 ## Запуск скрипта
 После установки неоходимых библиотек и создания переменных окружения запустить скрипт можно обычным способом. Например, через командную строку:
-
-```  python3 vk_post_comics.py  ```
+```  
+python3 vk_post_comics.py
+```
 
 ## Цель проекта
 
