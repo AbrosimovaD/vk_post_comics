@@ -61,8 +61,8 @@ def upload_photo(access_token, group_id, vers, photo, server, hash):
     decoded_response = response.json()
     if 'error' in decoded_response:
         raise requests.exceptions.HTTPError(decoded_response['error'])
-    owner_id = str(decoded_response['response'][0]['owner_id'])
-    photo_id = str(decoded_response['response'][0]['id'])
+    owner_id = decoded_response['response'][0]['owner_id']
+    photo_id = decoded_response['response'][0]['id']
     photo_name = f'photo{owner_id}_{photo_id}'
     return photo_name
 
