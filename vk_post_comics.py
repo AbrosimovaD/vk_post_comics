@@ -90,10 +90,10 @@ def main():
     group_id = os.environ['VK_GROUP_ID']
     last_comic_number = get_last_comic_number()
     comic_number = random.randint(1, last_comic_number)
-    url_for_comic = f'https://xkcd.com/{comic_number}/info.0.json'
-    comic_response = requests.get(url_for_comic)
+    comic_url = f'https://xkcd.com/{comic_number}/info.0.json'
+    comic_response = requests.get(comic_url)
     comic_response.raise_for_status()
-    filename_for_image = 'comic.png'
+    image_filename = 'comic.png'
     path_for_comic = Path(Path.home(), 'comic')
     comic = comic_response.json()
     url_for_image = comic['img']
@@ -101,13 +101,13 @@ def main():
     vers = '5.131'
     path_for_comic.mkdir(parents=True, exist_ok=True)
     try:
-        download_image(url_for_image, path_for_comic, filename_for_image)
+        download_image(url_for_image, path_for_comic, image_filename)
         upload_url = get_upload_url(access_token, group_id, vers)
-        post_photo_params = upload_photo_to_server(upload_url, path_for_comic, filename_for_image)
+        post_photo_params = upload_photo_to_server(upload_url, path_for_comic, image_filename)
         photo_name = upload_photo(access_token, group_id, vers, post_photo_params['photo'], post_photo_params['server'], post_photo_params['hash'])
         post_comic(photo_name, access_token, group_id, vers, comic_comment)
     finally:
-        Path(path_for_comic, filename_for_image).unlink(missing_ok=True)
+        Path(path_for_comic, image_filename).unlink(missing_ok=True)
 
 
 if __name__ == '__main__':
